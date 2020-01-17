@@ -22,6 +22,10 @@ const server = http.createServer((req, res) => {
                 <input type="text" name="note">
                 <button type="submit">Add note</button>                
             </form>
+            <form action="delete-note" method="POST">
+                <input type="number" name="index">
+                <button type="submit">Delete</button>                
+            </form>
         </body>
         </html>
         `);
