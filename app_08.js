@@ -8,12 +8,11 @@ const server = http.createServer((req, res) => {
     const method = req.method;
     console.log(`HTTP request received: url=${url} , method=${method}`);
 
-/* MemoApp app_08.js
-Lisää delete-nappi, jokaiselle notelle
-Lisää forEach loopissa formi, jossa delete nappi
--input type="hidden" value="$(index)"
-*/
+    // MemoApp app_08.js
 
+    // - Lisää Delete-nappi, jokaiselle notelle
+    // ==> Lisää forEach loopissa formi, jossa delete nappi
+    // - input type="hidden" value="${index}"
 
     if (url === '/') {
         res.write(`
@@ -24,22 +23,22 @@ Lisää forEach loopissa formi, jossa delete nappi
         notes.forEach((value, index) => {
             res.write(`
             <div>note:${value}, index: ${index}
-
             <form action="delete-note" method="POST">
                 <input type="hidden" name="index", value="${index}">
-                <button type="submit">Delete note</button>                
+                <button type="submit">Delete</button>
             </form>
-
-            </div>`);
+            </div>
+            `);
         });
 
-        res.write(`<form action="add-note" method="POST">
+        res.write(`
+            <form action="add-note" method="POST">
                 <input type="text" name="note">
-                <button type="submit">Add note</button>                
+                <button type="submit">Add note</button>
             </form>
             <form action="delete-note" method="POST">
                 <input type="number" name="index">
-                <button type="submit">Delete note</button>                
+                <button type="submit">Delete note</button>
             </form>
         </body>
         </html>
@@ -47,7 +46,6 @@ Lisää forEach loopissa formi, jossa delete nappi
         res.statusCode = 200; //Ok
         res.end();
         return;
-
     } else if (url === '/add-note') {
         console.log('/add-note');
         const chunks = [];
@@ -64,7 +62,6 @@ Lisää forEach loopissa formi, jossa delete nappi
             res.end();
         });
         return;
-
     } else if (url === '/delete-note') {
         console.log('/delete-note');
         const chunks = [];
@@ -81,8 +78,7 @@ Lisää forEach loopissa formi, jossa delete nappi
             res.end();
         });
         return;
-        
-    }   else if (url === '/favicon.ico') {
+    } else if (url === '/favicon.ico') {
         fs.readFile('./favicon.ico', (err, data) => {
             res.write(data);
             res.end();

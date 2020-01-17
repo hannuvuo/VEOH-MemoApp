@@ -8,24 +8,29 @@ const server = http.createServer((req, res) => {
     const method = req.method;
     console.log(`HTTP request received: url=${url} , method=${method}`);
 
-    // MemoApp app_07.js
+    // MemoApp app_08.js
 
-    // - 1) Lisää Delete-nappi, jolla voi poistaa noten. (input type=number name="index")
-    //  ==> Uusi <form> html:ään
-    //
-    // - 2) Käsittele /delete-note POST pyyntö
-    //  ==> 
-
-    // - notes.splice(index, 1)
+    // - Lisää Delete-nappi, jokaiselle notelle
+    // ==> Lisää forEach loopissa formi, jossa delete nappi
+    // - input type="hidden" value="${index}"
 
     if (url === '/') {
         res.write(`
         <html>
-        <head><title>MemoApp</title></head>
+        <head><title>MemoApp</title>
+        <meta http-equiv="Content-Type", content="text/html;charset=UTF-8">
+        </head>
         <body>`);
 
         notes.forEach((value, index) => {
-            res.write(`<div>note:${value}, index: ${index}</div>`);
+            res.write(`
+            <div>note:${value}, index: ${index}
+            <form action="delete-note" method="POST">
+                <input type="hidden" name="index", value="${index}">
+                <button type="submit">Delete</button>
+            </form>
+            </div>
+            `);
         });
 
         res.write(`
@@ -52,7 +57,8 @@ const server = http.createServer((req, res) => {
 
         req.on('end', () => {
             const body = Buffer.concat(chunks).toString();
-            const note = body.split('=')[1];
+            const decoded_body = decodeURIComponent(body); //M
+            const note = decoded_body.split('=')[1]; //M
             notes.push(note);
             res.statusCode = 303; //Redirect
             res.setHeader('Location', '/');
