@@ -24,7 +24,7 @@ const server = http.createServer((req, res) => {
             </form>
             <form action="delete-note" method="POST">
                 <input type="number" name="index">
-                <button type="submit">Delete</button>                
+                <button type="submit">Delete note</button>                
             </form>
         </body>
         </html>
@@ -48,7 +48,25 @@ const server = http.createServer((req, res) => {
             res.end();
         });
         return;
-    } else if (url === '/favicon.ico') {
+
+    } else if (url === '/delete-note') {
+        console.log('/delete-note');
+        const chunks = [];
+        req.on('data', (chunk) => {
+            chunks.push(chunk);
+        });
+
+        req.on('end', () => {
+            const body = Buffer.concat(chunks).toString();
+            const index = body.split('=')[1];
+            notes.splice(index, 1);
+            res.statusCode = 303; //Redirect
+            res.setHeader('Location', '/');
+            res.end();
+        });
+        return;
+        
+    }   else if (url === '/favicon.ico') {
         fs.readFile('./favicon.ico', (err, data) => {
             res.write(data);
             res.end();
